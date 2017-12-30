@@ -33,7 +33,7 @@ services:
 
     snmp-gateway:
         #image: prom/snmp-exporter
-        image: prom/snmp-exporter-armv6l
+        image: dhiltgen/snmp-exporter-armv6l
         restart: always
         ports:
             - "9116:9116"
