@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+    grafana:
+        image: grafana/grafana
+        restart: always
+        ports:
+            - "3000:3000"
+        volumes:
+          - /home/daniel/grafana:/var/lib/grafana
+
+    prometheus:
+        #image: prom/prometheus
+        image: dhiltgen/prometheus-armv6l
+        restart: always
+        ports:
+            - "9090:9090"
+        command: --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.console.libraries=/etc/prometheus/console_libraries --web.console.templates=/etc/prometheus/consoles --storage.tsdb.retention=8760h
+        volumes:
+          - prometheus-data:/prometheus
+          - ./prometheus.yml:/etc/prometheus/prometheus.yml
+        mem_reservation: 40m
+        mem_limit: 150m
+
+    prometheus-gateway:
+        #image: prom/pushgateway
+        image: dhiltgen/pushgateway-armv6l
+        restart: always
+        ports:
+            - "9091:9091"
+        mem_reservation: 10m
+        mem_limit: 15m
+
+    snmp-gateway:
+        #image: prom/snmp-exporter
+        image: prom/snmp-exporter-armv6l
+        restart: always
+        ports:
+            - "9116:9116"
+        mem_reservation: 10m
+        mem_limit: 15m
+
+volumes:
+    prometheus-data:
+        external: true
