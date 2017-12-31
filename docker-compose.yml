@@ -40,6 +40,17 @@ services:
         mem_reservation: 10m
         mem_limit: 15m
 
+    node-exporter:
+        #image: prom/node-exporter
+        image: dhiltgen/node-exporter-armv6l
+        restart: always
+        ports:
+            - "9100:9100"
+        network_mode: host
+        pid: host
+        mem_reservation: 10m
+        mem_limit: 15m
+
 volumes:
     prometheus-data:
         external: true
